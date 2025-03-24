@@ -97,7 +97,7 @@ func (u *OtpUsecase) ValidateOtp(request *models.OTPValidateRequest) (valid bool
 	otpDB, err := u.otpRepo.GetOtpByUserIDAndCode(request.UserID, request.OTP)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			errx = serror.Newi(http.StatusNotFound, "OTP not found")
+			errx = serror.Newi(http.StatusNotFound, "Invalid OTP code")
 			return
 		}
 		errx = serror.NewFromError(err)
@@ -105,8 +105,20 @@ func (u *OtpUsecase) ValidateOtp(request *models.OTPValidateRequest) (valid bool
 		return
 	}
 
-	if otpDB.OTPCode != request.OTP {
-		errx = serror.Newi(http.StatusBadRequest, "Invalid OTP code")
+	if time.Now().After(otpDB.ExpiredAt) {
+		errx = serror.Newi(http.StatusBadRequest, "OTP has expired")
+		return
+	}
+
+	if otpDB.Status == "validated" {
+		errx = serror.Newi(http.StatusBadRequest, "OTP has been validated")
+		return
+	}
+
+	err = u.otpRepo.UpdateStatusOtpByUserIDAndCode(otpDB.ID, "validated")
+	if err != nil {
+		errx = serror.NewFromError(err)
+		errx.AddCommentf("[usecase][ValidateOtp] Failed to update otp status, [userID: %s]", request.UserID)
 		return
 	}
 

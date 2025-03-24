@@ -14,4 +14,5 @@ type OtpRepository interface {
 	SaveOTP(otpLog *models.OTPLog) (*models.OTPLog, error)
 	GetOtpByUserID(userID int64) (otp *models.OTPLog, err error)
 	GetOtpByUserIDAndCode(userID int64, otpCode string) (otp *models.OTPLog, err error)
+	UpdateStatusOtpByUserIDAndCode(userID int64, status string) error
 }

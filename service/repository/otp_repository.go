@@ -33,3 +33,7 @@ func (u *otpRepo) GetOtpByUserID(userID int64) (otp *models.OTPLog, err error) {
 func (u *otpRepo) GetOtpByUserIDAndCode(userID int64, otpCode string) (otp *models.OTPLog, err error) {
 	return otp, u.db.Where("user_id = ? AND  otp_code = ?", userID, otpCode).First(&otp).Error
 }
+
+func (u *otpRepo) UpdateStatusOtpByUserIDAndCode(userID int64, status string) error {
+	return u.db.Model(&models.OTPLog{}).Where("user_id = ?", userID).Update("status", status).Error
+}
