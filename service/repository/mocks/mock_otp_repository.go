@@ -78,3 +78,17 @@ func (mr *MockOtpRepositoryMockRecorder) SaveOTP(arg0 interface{}) *gomock.Call 
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SaveOTP", reflect.TypeOf((*MockOtpRepository)(nil).SaveOTP), arg0)
 }
+
+// UpdateStatusOtpByUserIDAndCode mocks base method.
+func (m *MockOtpRepository) UpdateStatusOtpByUserIDAndCode(arg0 int64, arg1 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateStatusOtpByUserIDAndCode", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateStatusOtpByUserIDAndCode indicates an expected call of UpdateStatusOtpByUserIDAndCode.
+func (mr *MockOtpRepositoryMockRecorder) UpdateStatusOtpByUserIDAndCode(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatusOtpByUserIDAndCode", reflect.TypeOf((*MockOtpRepository)(nil).UpdateStatusOtpByUserIDAndCode), arg0, arg1)
+}
